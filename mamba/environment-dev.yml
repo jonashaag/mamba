@@ -4,8 +4,8 @@ channels:
 dependencies:
   - cxx-compiler
   - cmake
-  - ccache
   - ninja
+  - sccache
   - nlohmann_json
   - libsolv >=0.7.18
   - libarchive

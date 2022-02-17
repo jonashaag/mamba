@@ -18,7 +18,7 @@ namespace mamba
         fs::path PREFIX_STATE_FILE = fs::path("conda-meta") / "state";
         fs::path PACKAGE_ENV_VARS_DIR = fs::path("etc") / "conda" / "env_vars.d";
         std::string CONDA_ENV_VARS_UNSET_VAR = "***unset***";  // NOLINT(runtime/string)
-    }                                                          // namespace
+    }  // namespace
 
     /****************************
      * Activator implementation *
