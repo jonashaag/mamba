@@ -375,8 +375,8 @@ jobs:
                    -DBUILD_LIBMAMBA=ON ^
                    -DBUILD_STATIC=ON ^
                    -GNinja
-          sccache --show-stats
           ninja install
+          sccache --show-stats
           .\micromamba\micromamba.exe --help
       - name: tar micromamba artifact
         run: tar -cvf umamba.tar build/micromamba/micromamba.exe
