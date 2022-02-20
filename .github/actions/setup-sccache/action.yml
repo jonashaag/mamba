@@ -8,12 +8,17 @@ runs:
   steps:
     - name: Generate GitHub cache key
       id: cache-key
-      shell: bash -l {0}
+      shell: bash -xl {0}
       run: |
         key_prefix="sccache-${{ runner.os }}-$(TZ=UTC date +%F)"
         echo ::set-output name=key-prefix::"$key_prefix"
         echo ::set-output name=key::"$key_prefix-${{ github.job }}-$(TZ=UTC date '+%H:%M:%S')"
-        echo "SCCACHE_DIR=$HOME/sccache" >> $GITHUB_ENV
+        # TODO
+        if [[ ${{ runner.os }} = Windows ]]; then
+          echo "SCCACHE_DIR=C:/Users/runneradmin/sccache" >> $GITHUB_ENV
+        else
+          echo "SCCACHE_DIR=$HOME/sccache" >> $GITHUB_ENV
+        fi
         echo "CMAKE_CXX_COMPILER_LAUNCHER=sccache" >> $GITHUB_ENV
         echo "CMAKE_C_COMPILER_LAUNCHER=sccache" >> $GITHUB_ENV
 
