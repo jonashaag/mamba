@@ -35,8 +35,8 @@ jobs:
           cd build
           cmake .. -DBUILD_LIBMAMBA=ON \
                    -DBUILD_STATIC=ON \
-                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache \
-                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache \
+                   -DCMAKE_CXX_COMPILER_LAUNCHER=sccache \
+                   -DCMAKE_C_COMPILER_LAUNCHER=sccache \
                    -GNinja
           ninja
           sccache --show-stats
@@ -70,8 +70,8 @@ jobs:
           cmake .. -DBUILD_LIBMAMBA=ON \
                    -DBUILD_SHARED=ON \
                    -DBUILD_LIBMAMBA_TESTS=ON \
-                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache \
-                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache \
+                   -DCMAKE_CXX_COMPILER_LAUNCHER=sccache \
+                   -DCMAKE_C_COMPILER_LAUNCHER=sccache \
                    -GNinja
           ninja testing_libmamba_lock
           ninja test
@@ -106,8 +106,8 @@ jobs:
           cmake .. -DBUILD_MICROMAMBA=ON \
                    -DBUILD_LIBMAMBA=ON \
                    -DBUILD_SHARED=ON \
-                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache \
-                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache \
+                   -DCMAKE_CXX_COMPILER_LAUNCHER=sccache \
+                   -DCMAKE_C_COMPILER_LAUNCHER=sccache \
                    -GNinja
           ninja
           sccache --show-stats
@@ -165,8 +165,8 @@ jobs:
                    -DBUILD_LIBMAMBA=ON \
                    -DBUILD_SHARED=ON \
                    -DBUILD_MAMBA_PACKAGE=ON \
-                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache \
-                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache \
+                   -DCMAKE_CXX_COMPILER_LAUNCHER=sccache \
+                   -DCMAKE_C_COMPILER_LAUNCHER=sccache \
                    -GNinja
           ninja
           ninja install
@@ -252,8 +252,8 @@ jobs:
           cmake .. -DCMAKE_INSTALL_PREFIX=%CONDA_PREFIX%\Library ^
                    -DBUILD_LIBMAMBA=ON ^
                    -DBUILD_STATIC=ON ^
-                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache \
-                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache \
+                   -DCMAKE_CXX_COMPILER_LAUNCHER=sccache \
+                   -DCMAKE_C_COMPILER_LAUNCHER=sccache \
                    -GNinja
           ninja
           sccache --show-stats
@@ -297,8 +297,8 @@ jobs:
                    -DBUILD_LIBMAMBA=ON ^
                    -DBUILD_SHARED=ON ^
                    -DBUILD_MAMBA_PACKAGE=ON ^
-                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache ^
-                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache ^
+                   -DCMAKE_CXX_COMPILER_LAUNCHER=sccache ^
+                   -DCMAKE_C_COMPILER_LAUNCHER=sccache ^
                    -GNinja
           ninja
           ninja install
@@ -373,8 +373,8 @@ jobs:
                    -DBUILD_LIBMAMBA_TESTS=ON ^
                    -DBUILD_LIBMAMBA=ON ^
                    -DBUILD_SHARED=ON ^
-                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache ^
-                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache ^
+                   -DCMAKE_CXX_COMPILER_LAUNCHER=sccache ^
+                   -DCMAKE_C_COMPILER_LAUNCHER=sccache ^
                    -GNinja
           ninja install
           ninja test
@@ -413,8 +413,8 @@ jobs:
                    -DMICROMAMBA_LINKAGE=STATIC ^
                    -DBUILD_LIBMAMBA=ON ^
                    -DBUILD_STATIC=ON ^
-                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache ^
-                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache ^
+                   -DCMAKE_CXX_COMPILER_LAUNCHER=sccache ^
+                   -DCMAKE_C_COMPILER_LAUNCHER=sccache ^
                    -GNinja
           ninja install
           sccache --show-stats
