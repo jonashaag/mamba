@@ -22,9 +22,9 @@ jobs:
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
-      - uses: jonashaag/ccache-action@sccache-2
+      - uses: jonashaag/ccache-action@sccache-3
         with:
-          sccache: true
+          variant: sccache
           key: libmamba_static
       - name: build libmamba-static
         shell: bash -l {0}
@@ -52,9 +52,9 @@ jobs:
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
-      - uses: jonashaag/ccache-action@sccache-2
+      - uses: jonashaag/ccache-action@sccache-3
         with:
-          sccache: true
+          variant: sccache
           restore-keys: |
             libmamba_static
       - name: build and run libmamba C++ tests
@@ -85,9 +85,9 @@ jobs:
         with:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
-      - uses: jonashaag/ccache-action@sccache-2
+      - uses: jonashaag/ccache-action@sccache-3
         with:
-          sccache: true
+          variant: sccache
           restore-keys: |
             libmamba_static
       - name: build micromamba
@@ -136,9 +136,9 @@ jobs:
           environment-file: ./mamba/environment-dev.yml
           environment-name: build_env
           extra-specs: conda-build
-      - uses: jonashaag/ccache-action@sccache-2
+      - uses: jonashaag/ccache-action@sccache-3
         with:
-          sccache: true
+          variant: sccache
           restore-keys: |
             libmamba_static
       - name: run conda init
@@ -227,9 +227,9 @@ jobs:
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
-      - uses: jonashaag/ccache-action@sccache-2
+      - uses: jonashaag/ccache-action@sccache-3
         with:
-          sccache: true
+          variant: sccache
       - name: build libmamba-static
         shell: cmd /C call {0}
         run: |
@@ -262,9 +262,9 @@ jobs:
           extra-specs: |
             conda-build
             curl
-      - uses: jonashaag/ccache-action@sccache-2
+      - uses: jonashaag/ccache-action@sccache-3
         with:
-          sccache: true
+          variant: sccache
           restore-keys: |
             libmamba_static_win
       - name: run conda init
@@ -339,9 +339,9 @@ jobs:
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
-      - uses: jonashaag/ccache-action@sccache-2
+      - uses: jonashaag/ccache-action@sccache-3
         with:
-          sccache: true
+          variant: sccache
           restore-keys: |
             libmamba_static_win
       - name: build and run libmamba C++ tests
@@ -375,9 +375,9 @@ jobs:
         with:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
-      - uses: jonashaag/ccache-action@sccache-2
+      - uses: jonashaag/ccache-action@sccache-3
         with:
-          sccache: true
+          variant: sccache
           restore-keys: |
             libmamba_static_win
       - name: build micromamba
