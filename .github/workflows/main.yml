@@ -22,6 +22,7 @@ jobs:
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
+          cache-env: true
       - uses: jonashaag/ccache-action@sccache-3
         with:
           variant: sccache
@@ -34,6 +35,8 @@ jobs:
           cd build
           cmake .. -DBUILD_LIBMAMBA=ON \
                    -DBUILD_STATIC=ON \
+                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache \
+                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache \
                    -GNinja
           ninja
           sccache --show-stats
@@ -52,6 +55,7 @@ jobs:
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
+          cache-env: true
       - uses: jonashaag/ccache-action@sccache-3
         with:
           variant: sccache
@@ -66,6 +70,8 @@ jobs:
           cmake .. -DBUILD_LIBMAMBA=ON \
                    -DBUILD_SHARED=ON \
                    -DBUILD_LIBMAMBA_TESTS=ON \
+                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache \
+                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache \
                    -GNinja
           ninja testing_libmamba_lock
           ninja test
@@ -85,6 +91,7 @@ jobs:
         with:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
+          cache-env: true
       - uses: jonashaag/ccache-action@sccache-3
         with:
           variant: sccache
@@ -99,6 +106,8 @@ jobs:
           cmake .. -DBUILD_MICROMAMBA=ON \
                    -DBUILD_LIBMAMBA=ON \
                    -DBUILD_SHARED=ON \
+                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache \
+                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache \
                    -GNinja
           ninja
           sccache --show-stats
@@ -135,6 +144,7 @@ jobs:
         with:
           environment-file: ./mamba/environment-dev.yml
           environment-name: build_env
+          cache-env: true
           extra-specs: conda-build
       - uses: jonashaag/ccache-action@sccache-3
         with:
@@ -155,6 +165,8 @@ jobs:
                    -DBUILD_LIBMAMBA=ON \
                    -DBUILD_SHARED=ON \
                    -DBUILD_MAMBA_PACKAGE=ON \
+                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache \
+                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache \
                    -GNinja
           ninja
           ninja install
@@ -227,6 +239,7 @@ jobs:
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
+          cache-env: true
       - uses: jonashaag/ccache-action@sccache-3
         with:
           variant: sccache
@@ -239,6 +252,8 @@ jobs:
           cmake .. -DCMAKE_INSTALL_PREFIX=%CONDA_PREFIX%\Library ^
                    -DBUILD_LIBMAMBA=ON ^
                    -DBUILD_STATIC=ON ^
+                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache \
+                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache \
                    -GNinja
           ninja
           sccache --show-stats
@@ -259,6 +274,7 @@ jobs:
         with:
           environment-file: ./mamba/environment-dev.yml
           environment-name: build_env
+          cache-env: true
           extra-specs: |
             conda-build
             curl
@@ -281,6 +297,8 @@ jobs:
                    -DBUILD_LIBMAMBA=ON ^
                    -DBUILD_SHARED=ON ^
                    -DBUILD_MAMBA_PACKAGE=ON ^
+                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache ^
+                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache ^
                    -GNinja
           ninja
           ninja install
@@ -339,6 +357,7 @@ jobs:
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
+          cache-env: true
       - uses: jonashaag/ccache-action@sccache-3
         with:
           variant: sccache
@@ -354,6 +373,8 @@ jobs:
                    -DBUILD_LIBMAMBA_TESTS=ON ^
                    -DBUILD_LIBMAMBA=ON ^
                    -DBUILD_SHARED=ON ^
+                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache ^
+                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache ^
                    -GNinja
           ninja install
           ninja test
@@ -375,6 +396,7 @@ jobs:
         with:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
+          cache-env: true
       - uses: jonashaag/ccache-action@sccache-3
         with:
           variant: sccache
@@ -391,6 +413,8 @@ jobs:
                    -DMICROMAMBA_LINKAGE=STATIC ^
                    -DBUILD_LIBMAMBA=ON ^
                    -DBUILD_STATIC=ON ^
+                   -DDCMAKE_CXX_COMPILER_LAUNCHER=sccache ^
+                   -DDCMAKE_C_COMPILER_LAUNCHER=sccache ^
                    -GNinja
           ninja install
           sccache --show-stats
@@ -427,6 +451,7 @@ jobs:
         with:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
+
           extra-specs: menuinst
 
       - name: micromamba python based tests with pwsh
