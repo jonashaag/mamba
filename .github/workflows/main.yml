@@ -23,7 +23,7 @@ jobs:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: jonashaag/ccache-action@sccache-3
+      - uses: hendrikmuhs/ccache-actions@main
         with:
           variant: sccache
           key: libmamba_static
@@ -56,7 +56,7 @@ jobs:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: jonashaag/ccache-action@sccache-3
+      - uses: hendrikmuhs/ccache-actions@main
         with:
           variant: sccache
           restore-keys: |
@@ -92,7 +92,7 @@ jobs:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: jonashaag/ccache-action@sccache-3
+      - uses: hendrikmuhs/ccache-actions@main
         with:
           variant: sccache
           restore-keys: |
@@ -146,7 +146,7 @@ jobs:
           environment-name: build_env
           cache-env: true
           extra-specs: conda-build
-      - uses: jonashaag/ccache-action@sccache-3
+      - uses: hendrikmuhs/ccache-actions@main
         with:
           variant: sccache
           restore-keys: |
@@ -240,7 +240,7 @@ jobs:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: jonashaag/ccache-action@sccache-3
+      - uses: hendrikmuhs/ccache-actions@main
         with:
           variant: sccache
       - name: build libmamba-static
@@ -278,7 +278,7 @@ jobs:
           extra-specs: |
             conda-build
             curl
-      - uses: jonashaag/ccache-action@sccache-3
+      - uses: hendrikmuhs/ccache-actions@main
         with:
           variant: sccache
           restore-keys: |
@@ -358,7 +358,7 @@ jobs:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: jonashaag/ccache-action@sccache-3
+      - uses: hendrikmuhs/ccache-actions@main
         with:
           variant: sccache
           restore-keys: |
@@ -397,7 +397,7 @@ jobs:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: jonashaag/ccache-action@sccache-3
+      - uses: hendrikmuhs/ccache-actions@main
         with:
           variant: sccache
           restore-keys: |
@@ -451,7 +451,6 @@ jobs:
         with:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
-
           extra-specs: menuinst
 
       - name: micromamba python based tests with pwsh
