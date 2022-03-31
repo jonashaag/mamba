@@ -16,14 +16,14 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: create build environment
         uses: mamba-org/provision-with-micromamba@main
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: hendrikmuhs/ccache-actions@main
+      - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
           key: libmamba_static
@@ -49,14 +49,14 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: create build environment
         uses: mamba-org/provision-with-micromamba@main
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: hendrikmuhs/ccache-actions@main
+      - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
           restore-keys: |
@@ -85,14 +85,14 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: create build environment
         uses: mamba-org/provision-with-micromamba@main
         with:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: hendrikmuhs/ccache-actions@main
+      - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
           restore-keys: |
@@ -138,7 +138,7 @@ jobs:
         python-version: ["3.8"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: create build environment
         uses: mamba-org/provision-with-micromamba@main
         with:
@@ -146,7 +146,7 @@ jobs:
           environment-name: build_env
           cache-env: true
           extra-specs: conda-build
-      - uses: hendrikmuhs/ccache-actions@main
+      - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
           restore-keys: |
@@ -233,14 +233,14 @@ jobs:
         os: [windows-latest]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: create build environment
         uses: mamba-org/provision-with-micromamba@main
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: hendrikmuhs/ccache-actions@main
+      - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
       - name: build libmamba-static
@@ -268,7 +268,7 @@ jobs:
         python-version: ["3.7"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: create build environment
         uses: mamba-org/provision-with-micromamba@main
         with:
@@ -278,7 +278,7 @@ jobs:
           extra-specs: |
             conda-build
             curl
-      - uses: hendrikmuhs/ccache-actions@main
+      - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
           restore-keys: |
@@ -351,14 +351,14 @@ jobs:
         python-version: ["3.7"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: create build environment
         uses: mamba-org/provision-with-micromamba@main
         with:
           environment-file: ./libmamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: hendrikmuhs/ccache-actions@main
+      - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
           restore-keys: |
@@ -390,14 +390,14 @@ jobs:
         python-version: ["3.7"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: create build environment
         uses: mamba-org/provision-with-micromamba@main
         with:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
           cache-env: true
-      - uses: hendrikmuhs/ccache-actions@main
+      - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
           restore-keys: |
@@ -436,7 +436,7 @@ jobs:
         python-version: ["3.7"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v2
         with:
           name: micromamba_binary
