@@ -40,6 +40,8 @@ jobs:
                    -GNinja
           ninja
           sccache --show-stats
+          # Do not cache temporary envs with 'cache-env: true'
+          rm -rf $(micromamba info --json | jq -r '."env location"')/envs
 
   libmamba_cpp_tests:
     needs: [libmamba_static]
@@ -77,6 +79,11 @@ jobs:
           ninja testing_libmamba_lock
           ninja test
           sccache --show-stats
+      - name: Cleanup
+        shell: bash -l {0}
+        run: |
+          # Do not cache temporary envs with 'cache-env: true'
+          rm -rf $(micromamba info --json | jq -r '."env location"')/envs
 
   umamba_tests:
     needs: [libmamba_static]
@@ -129,6 +136,11 @@ jobs:
           export TEST_MAMBA_EXE=$(pwd)/build/micromamba/micromamba
           micromamba activate build_env
           pytest micromamba/tests/ -v -s
+      - name: Cleanup
+        shell: bash -l {0}
+        run: |
+          # Do not cache temporary envs with 'cache-env: true'
+          rm -rf $(micromamba info --json | jq -r '."env location"')/envs
 
   mamba_python_tests:
     needs: [libmamba_static]
@@ -227,6 +239,11 @@ jobs:
           pip install git+https://github.com/conda/conda-content-trust.git@master
 
           ./testserver.sh
+      - name: Cleanup
+        shell: bash -l {0}
+        run: |
+          # Do not cache temporary envs with 'cache-env: true'
+          rm -rf $(micromamba info --json | jq -r '."env location"')/envs
 
   libmamba_static_win:
     runs-on: ${{ matrix.os }}
@@ -261,6 +278,11 @@ jobs:
                    -GNinja
           ninja
           sccache --show-stats
+      - name: Cleanup
+        shell: bash -l {0}
+        run: |
+          # Do not cache temporary envs with 'cache-env: true'
+          rm -rf $(micromamba info --json | jq -r '."env location"')/envs
 
   mamba_python_tests_win:
     needs: [libmamba_static_win]
@@ -345,6 +367,11 @@ jobs:
           if [ "$(grep -c "local" list.txt)" -ne 2 ]; then
             exit 1
           fi
+      - name: Cleanup
+        shell: bash -l {0}
+        run: |
+          # Do not cache temporary envs with 'cache-env: true'
+          rm -rf $(micromamba info --json | jq -r '."env location"')/envs
 
   libmamba_cpp_tests_win:
     needs: [libmamba_static_win]
@@ -385,6 +412,11 @@ jobs:
           ninja install
           ninja test
           sccache --show-stats
+      - name: Cleanup
+        shell: bash -l {0}
+        run: |
+          # Do not cache temporary envs with 'cache-env: true'
+          rm -rf $(micromamba info --json | jq -r '."env location"')/envs
 
   umamba_tests_win:
     needs: [libmamba_static_win]
@@ -432,6 +464,11 @@ jobs:
         with:
           name: micromamba_binary
           path: umamba.tar
+      - name: Cleanup
+        shell: bash -l {0}
+        run: |
+          # Do not cache temporary envs with 'cache-env: true'
+          rm -rf $(micromamba info --json | jq -r '."env location"')/envs
 
   umamba_tests_win_cmd:
     needs: [umamba_tests_win]
@@ -487,3 +524,9 @@ jobs:
       #     export MAMBA_TEST_SHELL_TYPE=bash
       #
       #     pytest micromamba/tests/test_shell.py -v -s
+
+      - name: Cleanup
+        shell: bash -l {0}
+        run: |
+          # Do not cache temporary envs with 'cache-env: true'
+          rm -rf $(micromamba info --json | jq -r '."env location"')/envs
