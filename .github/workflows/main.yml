@@ -26,7 +26,7 @@ jobs:
       - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
-          key: libmamba_static
+          key: ${{ github.job }}-${{ matrix.os }}
       - name: build libmamba-static
         shell: bash -l {0}
         run: |
@@ -59,8 +59,9 @@ jobs:
       - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
+          key: ${{ github.job }}-${{ matrix.os }}
           restore-keys: |
-            libmamba_static
+            libmamba_static-${{ matrix.os }}
       - name: build and run libmamba C++ tests
         shell: bash -l {0}
         run: |
@@ -95,8 +96,9 @@ jobs:
       - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
+          key: ${{ github.job }}-${{ matrix.os }}
           restore-keys: |
-            libmamba_static
+            libmamba_static-${{ matrix.os }}
       - name: build micromamba
         shell: bash -l {0}
         run: |
@@ -149,8 +151,9 @@ jobs:
       - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
+          key: ${{ github.job }}-${{ matrix.os }}
           restore-keys: |
-            libmamba_static
+            libmamba_static-${{ matrix.os }}
       - name: run conda init
         shell: bash -l {0}
         run: conda init
@@ -243,6 +246,7 @@ jobs:
       - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
+          key: ${{ github.job }}-${{ matrix.os }}
       - name: build libmamba-static
         shell: cmd /C call {0}
         run: |
@@ -281,8 +285,9 @@ jobs:
       - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
+          key: ${{ github.job }}-${{ matrix.os }}
           restore-keys: |
-            libmamba_static_win
+            libmamba_static_win-${{ matrix.os }}
       - name: run conda init
         shell: bash -l {0}
         run: conda init
@@ -361,8 +366,9 @@ jobs:
       - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
+          key: ${{ github.job }}-${{ matrix.os }}
           restore-keys: |
-            libmamba_static_win
+            libmamba_static_win-${{ matrix.os }}
       - name: build and run libmamba C++ tests
         shell: cmd /C call {0}
         run: |
@@ -400,8 +406,9 @@ jobs:
       - uses: hendrikmuhs/ccache-action@main
         with:
           variant: sccache
+          key: ${{ github.job }}-${{ matrix.os }}
           restore-keys: |
-            libmamba_static_win
+            libmamba_static_win-${{ matrix.os }}
       - name: build micromamba
         shell: cmd /C call {0}
         run: |
