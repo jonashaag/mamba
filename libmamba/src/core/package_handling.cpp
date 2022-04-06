@@ -439,21 +439,22 @@ namespace mamba
 
     void extract_subproc(const fs::path& file, const fs::path& dest)
     {
-        std::vector<std::string> args;
-        if (Context::instance().is_micromamba)
-        {
-            args = { get_self_exe_path(), "package", "extract", file, dest };
-        }
-        else
-        {
-            args = { "mamba-package", "extract", file, dest };
-        }
+//         std::vector<std::string> args;
+//         if (Context::instance().is_micromamba)
+//         {
+//             args = { get_self_exe_path(), "package", "extract", file, dest };
+//         }
+//         else
+//         {
+//             args = { "mamba-package", "extract", file, dest };
+//         }
 
-        std::string out, err;
-        LOG_DEBUG << "Running subprocess extraction '" << join(" ", args) << "'";
-        auto [status, ec] = reproc::run(
-            args, reproc::options{}, reproc::sink::string(out), reproc::sink::string(err));
+//         std::string out, err;
+//         LOG_DEBUG << "Running subprocess extraction '" << join(" ", args) << "'";
+//         auto [status, ec] = reproc::run(
+//             args, reproc::options{}, reproc::sink::string(out), reproc::sink::string(err));
 
+        int ec = 1;
         if (ec)
         {
             LOG_DEBUG << "Subprocess extraction exited with code " << ec << ", stdout: " << out
