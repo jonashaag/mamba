@@ -454,14 +454,13 @@ namespace mamba
 //         auto [status, ec] = reproc::run(
 //             args, reproc::options{}, reproc::sink::string(out), reproc::sink::string(err));
 
-        int ec = 1;
-        if (ec)
-        {
-            LOG_DEBUG << "Subprocess extraction exited with code " << ec << ", stdout: " << out
-                      << ", stderr: " << err;
-            LOG_DEBUG << "Running in-process extraction for '" << file.string() << "'";
+//         if (ec)
+//         {
+//             LOG_DEBUG << "Subprocess extraction exited with code " << ec << ", stdout: " << out
+//                       << ", stderr: " << err;
+//             LOG_DEBUG << "Running in-process extraction for '" << file.string() << "'";
             extract(file, dest);
-        }
+//         }
     }
 
     bool transmute(const fs::path& pkg_file, const fs::path& target, int compression_level)
