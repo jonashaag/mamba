@@ -27,6 +27,7 @@
 #include "mamba/core/util.hpp"
 #include "mamba/core/validate.hpp"
 #include "mamba/core/virtual_packages.hpp"
+#include "mamba/core/output.hpp"
 
 #include <stdexcept>
 
@@ -310,6 +311,7 @@ PYBIND11_MODULE(bindings, m)
         .def_readwrite("max_retries", &Context::max_retries)
         .def_readwrite("retry_timeout", &Context::retry_timeout)
         .def_readwrite("retry_backoff", &Context::retry_backoff)
+        .def_readwrite("user_agent", &Context::user_agent)
         // .def_readwrite("read_timeout_secs", &Context::read_timeout_secs)
         .def_readwrite("connect_timeout_secs", &Context::connect_timeout_secs)
         .def_readwrite("add_pip_as_python_dependency", &Context::add_pip_as_python_dependency)
@@ -508,6 +510,8 @@ PYBIND11_MODULE(bindings, m)
     m.def("transmute", &transmute);
 
     m.def("get_virtual_packages", &get_virtual_packages);
+
+    m.def("cancel_json_output", [] { Console::instance().cancel_json_print(); });
 
     m.attr("SOLVER_SOLVABLE") = SOLVER_SOLVABLE;
     m.attr("SOLVER_SOLVABLE_NAME") = SOLVER_SOLVABLE_NAME;
