@@ -120,6 +120,8 @@ jobs:
                    -GNinja
           ninja
           sccache --show-stats
+          micromamba/micromamba --log-level trace info
+          micromamba/micromamba --log-level trace info | grep -q debug
       - name: install zsh, xonsh and fish in linux
         if: matrix.os == 'ubuntu-latest'
         shell: bash -l -eo pipefail {0}
