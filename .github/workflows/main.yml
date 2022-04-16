@@ -78,5 +78,5 @@ jobs:
                    -GNinja
           ninja
           sccache --show-stats
-          micromamba/micromamba --log-level trace info
-          micromamba/micromamba --log-level trace info | grep -q debug
+          #micromamba/micromamba --log-level trace info
+          #micromamba/micromamba --log-level trace info | grep -q debug
