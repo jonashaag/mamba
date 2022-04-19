@@ -196,7 +196,9 @@ namespace mamba
         if (m_has_progress_bars)
             m_extract_bar.update_progress(0, 1);
         {
+            LOG_DEBUG << "Waiting for lock for '" << m_tarball_path.string() << "'";
             std::lock_guard<counting_semaphore> lock(DownloadExtractSemaphore::semaphore);
+            LOG_DEBUG << "Have lock for '" << m_tarball_path.string() << "'";
             interruption_point();
             LOG_DEBUG << "Decompressing '" << m_tarball_path.string() << "'";
             fs::path extract_path;
@@ -236,12 +238,14 @@ namespace mamba
                 LOG_DEBUG << "Extracted to '" << extract_path.string() << "'";
                 write_repodata_record(extract_path);
                 add_url();
+                LOG_DEBUG << "Added url '" << extract_path.string() << "'";
 
                 if (m_has_progress_bars)
                 {
                     m_extract_bar.set_full();
                     m_extract_bar.mark_as_completed();
                 }
+                LOG_DEBUG << "Updated progbar '" << extract_path.string() << "'";
             }
             catch (std::exception& e)
             {
@@ -915,6 +919,8 @@ namespace mamba
         Console::stream() << "\nTransaction starting";
         fetch_extract_packages();
 
+	LOG_DEBUG << "fetch_extract_packages returned";
+
         History::UserRequest ur = History::UserRequest::prefilled();
 
         TransactionRollback rollback;
@@ -923,6 +929,7 @@ namespace mamba
 
         for (int i = 0; i < m_transaction->steps.count && !is_sig_interrupted(); i++)
         {
+	LOG_DEBUG << "Transaction step" << i;
             Id p = m_transaction->steps.elements[i];
             Id ttype = transaction_type(m_transaction, p, SOLVER_TRANSACTION_SHOW_ALL);
             Solvable* s = pool_id2solvable(pool, p);
@@ -1218,6 +1225,8 @@ namespace mamba
         }
 
         bool downloaded = multi_dl.download(MAMBA_DOWNLOAD_FAILFAST | MAMBA_DOWNLOAD_SORT);
+	LOG_ERROR << "download() done";
+	LOG_ERROR << "download() done";
         bool all_valid = true;
 
         if (!downloaded)
@@ -1226,23 +1235,31 @@ namespace mamba
             return false;
         }
         // make sure that all targets have finished extracting
+	unsigned int loop = 0;
         while (!is_sig_interrupted())
         {
+		LOG_DEBUG << "Checking targets";
             bool all_finished = true;
+	    int i =0 ;
+	    loop += 1;
             for (const auto& t : targets)
             {
+		    LOG_DEBUG << loop << " Checking target " << i;
+		    LOG_DEBUG << loop << " Target " << i << " finished? " << t->finished();
                 if (!t->finished())
                 {
                     all_finished = false;
                     break;
                 }
+		    i+=1;
             }
             if (all_finished)
             {
                 break;
             }
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         }
+	LOG_ERROR << "checking targets done";
 
         if (!(ctx.no_progress_bars || ctx.json || ctx.quiet))
         {
@@ -1252,10 +1269,12 @@ namespace mamba
 
         for (const auto& t : targets)
         {
+	LOG_ERROR << "checking validation results";
             if (t->validation_result() != PackageDownloadExtractTarget::VALIDATION_RESULT::VALID
                 && t->validation_result()
                        != PackageDownloadExtractTarget::VALIDATION_RESULT::UNDEFINED)
             {
+	LOG_ERROR << "found invalid";
                 t->clear_cache();
                 all_valid = false;
                 throw std::runtime_error(std::string("Found incorrect download: ") + t->name()
@@ -1263,6 +1282,7 @@ namespace mamba
             }
         }
 
+	LOG_ERROR << "fetch_extract_ done";
         return !is_sig_interrupted() && downloaded && all_valid;
     }
 

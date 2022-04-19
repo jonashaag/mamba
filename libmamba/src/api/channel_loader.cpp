@@ -94,6 +94,7 @@ namespace mamba
         {
             multi_dl.download(MAMBA_DOWNLOAD_FAILFAST);
         }
+	LOG_DEBUG << "channel_loader done";
 
         if (ctx.offline)
         {

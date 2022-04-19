@@ -23,9 +23,11 @@ set_package_command(CLI::App* subcom)
     extract_subcom->callback(
         [&]()
         {
-            std::cout << "Extracting " << fs::absolute(infile) << " to " << fs::absolute(dest)
+            std::cout << "SUB2! Extracting " << fs::absolute(infile) << " to " << fs::absolute(dest)
                       << std::endl;
             extract(fs::absolute(infile), fs::absolute(dest));
+            std::cout << "SUB2! Extracted " << fs::absolute(infile) << " to " << fs::absolute(dest)
+                      << std::endl;
         });
 
     auto compress_subcom = subcom->add_subcommand("compress");

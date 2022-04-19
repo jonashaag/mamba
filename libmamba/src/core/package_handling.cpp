@@ -7,6 +7,7 @@
 
 #include <archive.h>
 #include <archive_entry.h>
+#include <iostream>
 
 #include <sstream>
 
@@ -437,6 +438,7 @@ namespace mamba
         return dest_dir;
     }
 
+    static std::mutex sink_mutex;
     void extract_subproc(const fs::path& file, const fs::path& dest)
     {
         std::vector<std::string> args;
@@ -452,7 +454,10 @@ namespace mamba
         std::string out, err;
         LOG_DEBUG << "Running subprocess extraction '" << join(" ", args) << "'";
         auto [status, ec] = reproc::run(
-            args, reproc::options{}, reproc::sink::string(out), reproc::sink::string(err));
+            //args, reproc::options{}, reproc::sink::thread_safe::string(out, sink_mutex), reproc::sink::thread_safe::string(err, sink_mutex));
+            args, reproc::options{}, reproc::sink::ostream(std::cout), reproc::sink::ostream(std::cerr));
+            LOG_DEBUG << "Subprocess extraction " << join(" ", args) << " exited with code " << ec << ", stdout: " << out
+                      << ", stderr: " << err;
 
         if (ec)
         {

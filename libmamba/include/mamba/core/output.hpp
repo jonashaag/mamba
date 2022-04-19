@@ -179,8 +179,8 @@ namespace mamba
 #undef LOG_CRITICAL
 
 #define LOG(severity) mamba::MessageLogger(__FILE__, __LINE__, severity).stream()
-#define LOG_TRACE LOG(mamba::log_level::trace)
-#define LOG_DEBUG LOG(mamba::log_level::debug)
+#define LOG_TRACE LOG(mamba::log_level::info)
+#define LOG_DEBUG LOG(mamba::log_level::info)
 #define LOG_INFO LOG(mamba::log_level::info)
 #define LOG_WARNING LOG(mamba::log_level::warn)
 #define LOG_ERROR LOG(mamba::log_level::err)

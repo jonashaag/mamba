@@ -901,6 +901,8 @@ namespace mamba
             }
         } while ((still_running || !m_retry_targets.empty()) && !is_sig_interrupted());
 
+	LOG_DEBUG << "downloads done";
+
         if (is_sig_interrupted())
         {
             Console::print("Download interrupted");
