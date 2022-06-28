@@ -1801,6 +1801,7 @@ namespace mamba
             std::stringstream strStream;
             strStream << inFile.rdbuf();
             std::string s = strStream.str();
+            LOG_ERROR << expandvars(s);
             config = YAML::Load(expandvars(s));
         }
         catch (const std::exception& ex)
