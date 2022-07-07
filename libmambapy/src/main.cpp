@@ -38,7 +38,7 @@ namespace query
 {
     enum RESULT_FORMAT
     {
-         JSON,
+        JSON,
         TREE,
         TABLE,
         PRETTY
@@ -49,7 +49,7 @@ PYBIND11_MODULE(bindings, m)
 {
     using namespace mamba;
 
-    py::class_<fs::path> (m, "Path")
+    py::class_<fs::path>(m, "Path")
         .def(py::init<std::string>())
         .def("__str__", [](fs::path& self) -> std::string { return self.string(); })
         .def("__repr__",
