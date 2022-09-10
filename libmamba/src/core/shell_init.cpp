@@ -489,8 +489,8 @@ namespace mamba
     {
         fs::u8path exe = get_self_exe_path();
 
-            fs::create_directories(root_prefix / "condabin");
-            fs::create_directories(root_prefix / "Scripts");
+        fs::create_directories(root_prefix / "condabin");
+        fs::create_directories(root_prefix / "Scripts");
 
 
         std::ofstream mamba_bat_f = open_ofstream(root_prefix / "condabin" / "micromamba.bat");
@@ -585,7 +585,7 @@ namespace mamba
         {
             PosixActivator a;
             auto sh_source_path = a.hook_source_path();
-                fs::create_directories(sh_source_path.parent_path());
+            fs::create_directories(sh_source_path.parent_path());
 
             std::ofstream sh_file = open_ofstream(sh_source_path);
             sh_file << data_micromamba_sh;
