@@ -549,7 +549,9 @@ jobs:
         with:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
-          extra-specs: menuinst
+          extra-specs: |
+            menuinst
+            pytest-xdist
 
       - name: micromamba python based tests with pwsh
         shell: powershell
@@ -559,7 +561,7 @@ jobs:
           $env:TEST_MAMBA_EXE = Join-Path -Path $pwd -ChildPath 'build\micromamba\micromamba.exe'
           $env:MAMBA_TEST_SHELL_TYPE='powershell'
 
-          pytest -v --capture=tee-sys micromamba/tests/ --durations=50
+          pytest -v --capture=tee-sys micromamba/tests/ --durations=50 -n auto --dist loadfile
 
       # - name: micromamba python based tests
       #   shell: cmd /C call {0}
