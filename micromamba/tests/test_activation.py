@@ -220,7 +220,7 @@ def call_interpreter(s, tmp_path, interpreter, interactive=False, env=None):
 
 
 def get_interpreters(exclude=None):
-    return sorted(possible_interpreters[running_os] - (exclude or set())
+    return sorted(possible_interpreters[running_os] - (exclude or set()))
 
 
 def get_valid_interpreters():
