@@ -41,7 +41,6 @@ def mitmdump(port, options=[]):
             proxy_process.kill()
 
 
-
 class TestProxy:
 
     current_root_prefix = os.environ["MAMBA_ROOT_PREFIX"]
@@ -96,7 +95,6 @@ class TestProxy:
         else:
             proxy_options = []
             proxy_url = "http://localhost:{}".format(unused_tcp_port)
-
 
         cmd = ["xtensor"]
         f_name = random_string() + ".yaml"
