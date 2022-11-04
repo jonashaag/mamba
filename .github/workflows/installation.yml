@@ -1,4 +1,4 @@
-name: Test micro.mamba.pm
+name: Test official installation methods
 
 on:
   schedule:
@@ -38,6 +38,36 @@ jobs:
           else
             curl http://micro.mamba.pm/install.sh | ${{ matrix.shell }}
           fi
+      - name: Test Micromamba
+        # use either -l or -i to source .bash_profile or .bashrc/.zshrc
+        run: |
+          ${{ matrix.shell }} ${{ matrix.shell-source-param }} -ec micromamba
+      - uses: dblock/create-a-github-issue@2c9fa0d32c24d651281c37d21e5b49e333500fe8
+        #if: failure()
+        if: false
+        with:
+          filename: .github/workflows/test_issue.md
+          update_existing: true
+          search_existing: all
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test_anaconda:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest, shell: bash, shell-source-param: -i}
+          #- {os: macos-latest, shell: zsh, shell-source-param: -i}
+          #- {os: macos-latest, shell: bash, shell-source-param: -l}
+          #- {os: windows-latest, shell: bash, shell-source-param: -l}
+    steps:
+      - name: Install Mamba into fresh Anaconda installation (${{ matrix.os }}, ${{ matrix.shell }})
+        run: |
+          curl -Lvo https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh
+          chmod +x Anaconda*.sh
+          ./Anaconda*.sh
       - name: Test Micromamba
         # use either -l or -i to source .bash_profile or .bashrc/.zshrc
         run: |
