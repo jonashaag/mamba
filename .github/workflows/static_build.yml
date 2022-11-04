@@ -94,6 +94,7 @@ jobs:
           path: ${{ github.workspace }}/artifacts/micromamba
 
   micromamba_full_static_win:
+    if: false
     # These build instructions are based on https://github.com/conda-forge/micromamba-feedstock
     name: "micromamba - win-64"
     runs-on: windows-2019
