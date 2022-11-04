@@ -19,6 +19,7 @@ defaults:
 
 jobs:
   test_micro_mamba_pm:
+    if: false
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -69,10 +70,8 @@ jobs:
           curl -LO https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh
           chmod +x Anaconda*.sh
           ./Anaconda*.sh -b
-      - name: Test Micromamba
-        # use either -l or -i to source .bash_profile or .bashrc/.zshrc
-        run: |
-          ${{ matrix.shell }} ${{ matrix.shell-source-param }} -ec micromamba
+          conda install -n base -c conda-forge mamba
+          conda run --no-capture-output mamba info
       - uses: dblock/create-a-github-issue@2c9fa0d32c24d651281c37d21e5b49e333500fe8
         #if: failure()
         if: false
