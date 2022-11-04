@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   libmamba_static:
+    if: false
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -52,6 +53,7 @@ jobs:
           rm -rf $(micromamba info --json | jq -r '."env location"')/envs
 
   libmamba_cpp_tests:
+    if: false
     needs: [libmamba_static]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -267,6 +269,7 @@ jobs:
           rm -rf $(micromamba info --json | jq -r '."env location"')/envs
 
   libmamba_static_win:
+    if: false
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
