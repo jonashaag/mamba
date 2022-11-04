@@ -72,7 +72,8 @@ jobs:
           chmod +x Anaconda*.sh
           ./Anaconda*.sh -b -p myconda
           ls myconda
-          myconda/condabin/conda install -y -n base -c conda-forge "mamba>=0.27"
+          myconda/condabin/conda install -n base conda-libmamba-solver
+          myconda/condabin/conda install -y -n base -c conda-forge "mamba>=0.27" --solver=libmamba
           myconda/condabin/conda run --no-capture-output mamba info
       - uses: dblock/create-a-github-issue@2c9fa0d32c24d651281c37d21e5b49e333500fe8
         #if: failure()
