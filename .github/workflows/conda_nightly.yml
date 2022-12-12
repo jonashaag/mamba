@@ -44,6 +44,7 @@ jobs:
           cd conda
           git rm -r tests
           GIT_AUTHOR_NAME=hack GIT_COMMITTER_NAME=hack GIT_COMMITTER_EMAIL=hack@hack git commit -am "Workaround for boa not supporting --no-test"
+          sed -i 's/host:/host:\n    - tqdm >=4/g' recipe/meta.yaml # Maybe fix recipe
           conda mambabuild --python 3.10 --no-copy-test-source-files --no-test . 2>&1 | tee build-log
       - run: micromamba install --no-channel-priority $(grep -Eo '[^ ]+/conda-.+.tar.bz2' conda/build-log)
 
