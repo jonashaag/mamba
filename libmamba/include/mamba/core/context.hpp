@@ -138,7 +138,7 @@ namespace mamba
         ChannelPriority channel_priority = ChannelPriority::kFlexible;
         bool auto_activate_base = false;
 
-        std::size_t download_threads = 5;
+        std::size_t download_threads = 50;
         int extract_threads = 0;
         bool extract_sparse = false;
 
