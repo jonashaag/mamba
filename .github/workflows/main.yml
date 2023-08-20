@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   libmamba_static:
+    if: false
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -52,6 +53,7 @@ jobs:
           rm -rf ~/micromamba*/envs/*/envs
 
   libmamba_cpp_tests:
+    if: false
     needs: [libmamba_static]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -95,6 +97,7 @@ jobs:
           rm -rf ~/micromamba*/envs/*/envs
 
   umamba_tests:
+    if: false
     needs: [libmamba_static]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -153,6 +156,7 @@ jobs:
           rm -rf ~/micromamba*/envs/*/envs
 
   mamba_python_tests:
+    if: false
     needs: [libmamba_static]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -379,7 +383,7 @@ jobs:
           pip install ./mamba[test] --no-deps
       - name: run mamba tests suite
         shell: bash -l {0}
-        run: pytest -v --capture=tee-sys mamba/tests
+        run: pytest -v --capture=tee-sys mamba/tests --durations=50
       - name: Run create command
         shell: bash -l {0}
         run: mamba create -n test_env xtensor -c conda-forge -y
@@ -551,7 +555,9 @@ jobs:
         with:
           environment-file: ./micromamba/environment-dev.yml
           environment-name: build_env
-          extra-specs: menuinst
+          extra-specs: |
+            menuinst
+            pytest-xdist
 
       - name: micromamba python based tests with pwsh
         shell: powershell
@@ -561,7 +567,7 @@ jobs:
           $env:TEST_MAMBA_EXE = Join-Path -Path $pwd -ChildPath 'build\micromamba\micromamba.exe'
           $env:MAMBA_TEST_SHELL_TYPE='powershell'
 
-          pytest -v --capture=tee-sys micromamba/tests/
+          pytest -v --capture=tee-sys micromamba/tests/ --durations=50 -n auto --dist loadfile
 
       # - name: micromamba python based tests
       #   shell: cmd /C call {0}

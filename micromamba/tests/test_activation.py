@@ -228,9 +228,7 @@ def call_interpreter(s, tmp_path, interpreter, interactive=False, env=None):
 
 
 def get_interpreters(exclude=None):
-    if exclude is None:
-        exclude = []
-    return [x for x in possible_interpreters[running_os] if x not in exclude]
+    return sorted(possible_interpreters[running_os] - (exclude or set()))
 
 
 def get_valid_interpreters():
@@ -504,7 +502,7 @@ class TestActivation:
         value_after_deinit = read_windows_registry(regkey)
         assert value_after_deinit == prev_value
 
-    @pytest.mark.parametrize("interpreter", get_interpreters(exclude=["cmd.exe"]))
+    @pytest.mark.parametrize("interpreter", get_interpreters(exclude={"cmd.exe"}))
     def test_shell_init_deinit_contents(
         self,
         tmp_home,

@@ -1,4 +1,5 @@
 import asyncio
+import contextlib
 import os
 import shutil
 import time
@@ -7,6 +8,37 @@ from pathlib import Path
 from subprocess import TimeoutExpired
 
 from .helpers import *
+
+
+@contextlib.contextmanager
+def mitmdump(port, options=[]):
+    script = Path(__file__).parent / "dump_proxy_connections.py"
+    proxy_process = subprocess.Popen(
+        [
+            TestProxy.mitm_exe,
+            "--listen-port",
+            str(port),
+            "--scripts",
+            script,
+            "--set",
+            f"outfile={TestProxy.mitm_dump_path}",
+            "--set",
+            f"confdir={TestProxy.mitm_confdir}",
+            *options,
+        ]
+    )
+
+    try:
+        # Wait until mitmproxy has generated its certificate or some tests might fail
+        while not (Path(TestProxy.mitm_confdir) / "mitmproxy-ca-cert.pem").exists():
+            time.sleep(1)
+        yield
+    finally:
+        proxy_process.terminate()
+        try:
+            proxy_process.wait(3)
+        except TimeoutExpired:
+            proxy_process.kill()
 
 
 class TestProxy:
@@ -21,8 +53,6 @@ class TestProxy:
     mitm_exe = shutil.which("mitmdump")
     mitm_confdir = os.path.join(root_prefix, "mitmproxy")
     mitm_dump_path = os.path.join(root_prefix, "dump.json")
-
-    proxy_process = None
 
     @classmethod
     def setup_class(cls):
@@ -39,36 +69,6 @@ class TestProxy:
 
     def teardown_method(self):
         shutil.rmtree(TestProxy.root_prefix)
-
-    def start_proxy(self, port, options=[]):
-        assert self.proxy_process is None
-        script = Path(__file__).parent / "dump_proxy_connections.py"
-        self.proxy_process = subprocess.Popen(
-            [
-                TestProxy.mitm_exe,
-                "--listen-port",
-                str(port),
-                "--scripts",
-                script,
-                "--set",
-                f"outfile={TestProxy.mitm_dump_path}",
-                "--set",
-                f"confdir={TestProxy.mitm_confdir}",
-                *options,
-            ]
-        )
-
-        # Wait until mitmproxy has generated its certificate or some tests might fail
-        while not (Path(TestProxy.mitm_confdir) / "mitmproxy-ca-cert.pem").exists():
-            time.sleep(1)
-
-    def stop_proxy(self):
-        self.proxy_process.terminate()
-        try:
-            self.proxy_process.wait(3)
-        except TimeoutExpired:
-            self.proxy_process.kill()
-        self.proxy_process = None
 
     @pytest.mark.parametrize(
         "auth",
@@ -95,8 +95,6 @@ class TestProxy:
         else:
             proxy_options = []
             proxy_url = "http://localhost:{}".format(unused_tcp_port)
-
-        self.start_proxy(unused_tcp_port, proxy_options)
 
         cmd = ["xtensor"]
         f_name = random_string() + ".yaml"
@@ -126,9 +124,8 @@ class TestProxy:
             # backends succeed revocation check in that case.
             cmd += ["--ssl-no-revoke"]
 
-        res = install(*cmd, "--json", no_rc=False)
-
-        self.stop_proxy()
+        with mitmdump(unused_tcp_port, proxy_options):
+            res = install(*cmd, "--json", no_rc=False)
 
         with open(TestProxy.mitm_dump_path, "r") as f:
             proxied_requests = f.read().splitlines()
