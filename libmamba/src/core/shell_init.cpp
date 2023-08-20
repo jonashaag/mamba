@@ -556,15 +556,9 @@ namespace mamba
     {
         fs::u8path exe = get_self_exe_path();
 
-        try
-        {
-            fs::create_directories(root_prefix / "condabin");
-            fs::create_directories(root_prefix / "Scripts");
-        }
-        catch (...)
-        {
-            // Maybe the prefix isn't writable. No big deal, just keep going.
-        }
+        fs::create_directories(root_prefix / "condabin");
+        fs::create_directories(root_prefix / "Scripts");
+
 
         std::ofstream mamba_bat_f = open_ofstream(root_prefix / "condabin" / "micromamba.bat");
         std::string mamba_bat_contents(data_micromamba_bat);
@@ -663,14 +657,8 @@ namespace mamba
         {
             PosixActivator a;
             auto sh_source_path = a.hook_source_path();
-            try
-            {
-                fs::create_directories(sh_source_path.parent_path());
-            }
-            catch (...)
-            {
-                // Maybe the prefix isn't writable. No big deal, just keep going.
-            }
+            fs::create_directories(sh_source_path.parent_path());
+
             std::ofstream sh_file = open_ofstream(sh_source_path);
             sh_file << data_micromamba_sh;
         }
