@@ -25,11 +25,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { os: ubuntu-latest, platform: linux, arch: "64" }
-          - { os: ubuntu-latest, platform: linux, arch: aarch64 }
-          - { os: ubuntu-latest, platform: linux, arch: ppc64le }
-          - { os: macos-latest, platform: osx, arch: "64" }
-          - { os: macos-latest, platform: osx, arch: arm64 }
+          - { os: ubuntu-latest-xlarge, platform: linux, arch: "64" }
+          - { os: ubuntu-latest-xlarge, platform: linux, arch: aarch64 }
+          # - { os: ubuntu-latest, platform: linux, arch: ppc64le }
+          - { os: macos-latest-large, platform: osx, arch: "64" }
+          - { os: macos-latest-xlarge, platform: osx, arch: arm64 }
     steps:
       - name: Checkout micromamba-feedstock
         uses: actions/checkout@v3
@@ -103,79 +103,79 @@ jobs:
           name: micromamba-${{ matrix.platform }}-${{ matrix.arch }}
           path: ${{ github.workspace }}/artifacts/micromamba
 
-  micromamba-static-win:
-    name: "micromamba - win-64"
-    runs-on: windows-2022
-    steps:
-      - uses: actions/checkout@v3
-      - name: Cache vcpkg packages
-        uses: actions/cache@v3
-        with:
-          # The installed packages are in %VCPKG_INSTALLATION_ROOT%\installed\x64-windows-static
-          # and the info which packages are installed is in %VCPKG_INSTALLATION_ROOT%\installed\vcpkg
-          path: C:\Users\runneradmin\AppData\Local\vcpkg
-          key: vcpkg-win-64-appdata
-      - name: Install dependencies with vcpkg
-        shell: cmd
-        # remove libsolv overlay-ports once https://github.com/microsoft/vcpkg/pull/31275 is released
-        run: |
-          vcpkg install --triplet x64-windows-static-md
-      - uses: hendrikmuhs/ccache-action@main
-        with:
-          variant: sccache
-          key: sccache-${{ github.job }}-win-64
-      - name: Set up MSVC
-        uses: ilammy/msvc-dev-cmd@v1
-      - uses: mamba-org/setup-micromamba@v1
-        with:
-          environment-name: mambabuild
-          init-shell: bash cmd.exe
-          create-args: >-
-            cli11>=2.2,<3
-            cpp-expected
-            nlohmann_json
-            simdjson-static>=3.3.0
-            spdlog
-            fmt
-            yaml-cpp-static>=0.8.0
-            libsolv-static>=0.7.24
-            reproc-cpp-static>=14.2.4.post0
-      - name: build micromamba
-        shell: cmd /C call {0}
-        run: |
-          set CMAKE_PREFIX_PATH=.\vcpkg_installed\x64-windows-static-md;%CONDA_PREFIX%\Library
-          cmake -S . ^
-            -B build ^
-            -D CMAKE_CXX_COMPILER_LAUNCHER=sccache ^
-            -D CMAKE_C_COMPILER_LAUNCHER=sccache ^
-            -D CMAKE_MSVC_RUNTIME_LIBRARY="MultiThreadedDLL" ^
-            -D CMAKE_BUILD_TYPE="Release" ^
-            -D BUILD_LIBMAMBA=ON ^
-            -D BUILD_STATIC=ON ^
-            -D BUILD_MICROMAMBA=ON ^
-            -G "Ninja"
-          if %errorlevel% neq 0 exit /b %errorlevel%
-          cmake --build build
-          if %errorlevel% neq 0 exit /b %errorlevel%
-          sccache --show-stats
-          if %errorlevel% neq 0 exit /b %errorlevel%
-          .\build\micromamba\micromamba.exe --version
-          if %errorlevel% neq 0 exit /b %errorlevel%
-          .\build\micromamba\micromamba.exe --help
-          if %errorlevel% neq 0 exit /b %errorlevel%
-      - name: build cache statistics
-        run: sccache --show-stats
-      - name: Archive-build artifact
-        if: failure()
-        run: tar -czf ${{ github.workspace }}/micromamba-build-failed-win-64.tar.gz ${{ github.workspace }}/build/
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: micromamba-build-failed-win-64
-          path: ${{ github.workspace }}/micromamba-build-failed-win-64.tar.gz
-          retention-days: 7
-      - uses: actions/upload-artifact@v3
-        with:
-          name: micromamba-win-64
-          path: ${{ github.workspace }}/build/micromamba/micromamba.exe
+  # micromamba-static-win:
+  #   name: "micromamba - win-64"
+  #   runs-on: windows-2022
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Cache vcpkg packages
+  #       uses: actions/cache@v3
+  #       with:
+  #         # The installed packages are in %VCPKG_INSTALLATION_ROOT%\installed\x64-windows-static
+  #         # and the info which packages are installed is in %VCPKG_INSTALLATION_ROOT%\installed\vcpkg
+  #         path: C:\Users\runneradmin\AppData\Local\vcpkg
+  #         key: vcpkg-win-64-appdata
+  #     - name: Install dependencies with vcpkg
+  #       shell: cmd
+  #       # remove libsolv overlay-ports once https://github.com/microsoft/vcpkg/pull/31275 is released
+  #       run: |
+  #         vcpkg install --triplet x64-windows-static-md
+  #     - uses: hendrikmuhs/ccache-action@main
+  #       with:
+  #         variant: sccache
+  #         key: sccache-${{ github.job }}-win-64
+  #     - name: Set up MSVC
+  #       uses: ilammy/msvc-dev-cmd@v1
+  #     - uses: mamba-org/setup-micromamba@v1
+  #       with:
+  #         environment-name: mambabuild
+  #         init-shell: bash cmd.exe
+  #         create-args: >-
+  #           cli11>=2.2,<3
+  #           cpp-expected
+  #           nlohmann_json
+  #           simdjson-static>=3.3.0
+  #           spdlog
+  #           fmt
+  #           yaml-cpp-static>=0.8.0
+  #           libsolv-static>=0.7.24
+  #           reproc-cpp-static>=14.2.4.post0
+  #     - name: build micromamba
+  #       shell: cmd /C call {0}
+  #       run: |
+  #         set CMAKE_PREFIX_PATH=.\vcpkg_installed\x64-windows-static-md;%CONDA_PREFIX%\Library
+  #         cmake -S . ^
+  #           -B build ^
+  #           -D CMAKE_CXX_COMPILER_LAUNCHER=sccache ^
+  #           -D CMAKE_C_COMPILER_LAUNCHER=sccache ^
+  #           -D CMAKE_MSVC_RUNTIME_LIBRARY="MultiThreadedDLL" ^
+  #           -D CMAKE_BUILD_TYPE="Release" ^
+  #           -D BUILD_LIBMAMBA=ON ^
+  #           -D BUILD_STATIC=ON ^
+  #           -D BUILD_MICROMAMBA=ON ^
+  #           -G "Ninja"
+  #         if %errorlevel% neq 0 exit /b %errorlevel%
+  #         cmake --build build
+  #         if %errorlevel% neq 0 exit /b %errorlevel%
+  #         sccache --show-stats
+  #         if %errorlevel% neq 0 exit /b %errorlevel%
+  #         .\build\micromamba\micromamba.exe --version
+  #         if %errorlevel% neq 0 exit /b %errorlevel%
+  #         .\build\micromamba\micromamba.exe --help
+  #         if %errorlevel% neq 0 exit /b %errorlevel%
+  #     - name: build cache statistics
+  #       run: sccache --show-stats
+  #     - name: Archive-build artifact
+  #       if: failure()
+  #       run: tar -czf ${{ github.workspace }}/micromamba-build-failed-win-64.tar.gz ${{ github.workspace }}/build/
+  #     - name: Upload build artifacts
+  #       uses: actions/upload-artifact@v3
+  #       if: failure()
+  #       with:
+  #         name: micromamba-build-failed-win-64
+  #         path: ${{ github.workspace }}/micromamba-build-failed-win-64.tar.gz
+  #         retention-days: 7
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         name: micromamba-win-64
+  #         path: ${{ github.workspace }}/build/micromamba/micromamba.exe
